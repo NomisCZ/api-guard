@@ -4,7 +4,7 @@ namespace Chrisbjr\ApiGuard\Providers;
 
 use Chrisbjr\ApiGuard\Console\Commands\GenerateApiKey;
 use Chrisbjr\ApiGuard\Http\Middleware\AuthenticateApiKey;
-use Illuminate\Routing\Router;
+use Laravel\Lumen\Routing\Router;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\ServiceProvider;
 
@@ -24,8 +24,6 @@ class ApiGuardServiceProvider extends ServiceProvider
     {
         // Publish migrations
         $this->publishFiles();
-
-        $this->defineMiddleware($router);
     }
 
     /** /
@@ -38,17 +36,6 @@ class ApiGuardServiceProvider extends ServiceProvider
         $this->commands([
             GenerateApiKey::class,
         ]);
-    }
-
-    private function defineMiddleware($router)
-    {
-        foreach ($this->middlewares as $name => $class) {
-            if ( version_compare(app()->version(), '5.4.0') >= 0 ) {
-                $router->aliasMiddleware($name, $class);
-            } else {
-                $router->middleware($name, $class);
-            }
-        }
     }
 
     private function publishFiles()
