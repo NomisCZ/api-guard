@@ -2,6 +2,7 @@
 
 namespace Chrisbjr\ApiGuard\Http\Middleware;
 
+use App\Http\Response;
 use Carbon\Carbon;
 use Chrisbjr\ApiGuard\Events\ApiKeyAuthenticated;
 use Chrisbjr\ApiGuard\Models\Device;
@@ -54,11 +55,11 @@ class AuthenticateApiKey
     protected function unauthorizedResponse()
     {
         return response([
-            'error' => [
-                'code'      => '401',
-                'http_code' => 'GEN-UNAUTHORIZED',
-                'message'   => 'Unauthorized.',
-            ],
-        ], 401);
+		
+			'success' => false,
+            'status' => Response::HTTP_UNAUTHORIZED,
+            'message' => 'Unauthorized',
+            'response_type' => Response::TYPE_JSON,
+        ], Response::HTTP_UNAUTHORIZED);
     }
 }
